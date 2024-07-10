@@ -2,22 +2,21 @@ package br.com.genius_finance.controller;
 
 import br.com.genius_finance.model.dto.BaseDTO;
 import br.com.genius_finance.model.entity.BaseEntity;
-import br.com.genius_finance.service.BaseService;
+import br.com.genius_finance.service.BaseServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
 import static org.springframework.http.HttpStatus.*;
 
-@Controller
+@RestController
 @RequiredArgsConstructor
-public class BaseControllerImpl<T extends BaseDTO, D extends BaseDTO, E extends BaseEntity> implements BaseController<T, D> {
+public abstract class BaseControllerImpl<T extends BaseDTO, D extends BaseDTO, E extends BaseEntity> implements BaseController<T, D> {
 
-    private final BaseService<E> baseService;
+    protected final BaseServiceImpl<E> baseService;
 
     @Override
     @PostMapping
@@ -48,4 +47,5 @@ public class BaseControllerImpl<T extends BaseDTO, D extends BaseDTO, E extends 
     public ResponseEntity<Void> delete(@PathVariable UUID uuid) {
         return new ResponseEntity<>(NO_CONTENT);
     }
+
 }
