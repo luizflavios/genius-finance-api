@@ -12,9 +12,24 @@ import org.springframework.stereotype.Service;
 @Service
 public class TransactionService extends BaseServiceImpl<TransactionRequestDTO, TransactionResponseDTO, TransactionEntity> {
 
+    private final PersonService personService;
+
     @Autowired
     public TransactionService(BaseRepository<TransactionEntity> baseRepository,
-                              BaseMapper<TransactionRequestDTO, TransactionResponseDTO, TransactionEntity> baseMapper) {
+                              BaseMapper<TransactionRequestDTO, TransactionResponseDTO, TransactionEntity> baseMapper,
+                              PersonService personService) {
         super(baseRepository, baseMapper);
+        this.personService = personService;
+    }
+
+    @Override
+    public void prePersist(TransactionEntity transactionEntity) {
+        personAssociation(transactionEntity);
+        super.prePersist(transactionEntity);
+    }
+
+    private void personAssociation(TransactionEntity transactionEntity) {
+        var person = personService.findByUuid(transactionEntity.getPerson().getUuid());
+        transactionEntity.setPerson(person);
     }
 }

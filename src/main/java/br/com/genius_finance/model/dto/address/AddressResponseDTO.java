@@ -1,6 +1,7 @@
 package br.com.genius_finance.model.dto.address;
 
 import br.com.genius_finance.model.dto.base.BaseResponseDTO;
+import br.com.genius_finance.model.dto.person.PersonResponseDTO;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
@@ -22,5 +23,6 @@ public class AddressResponseDTO extends BaseResponseDTO implements Serializable 
     private String zipCode;
     private String complement;
     private String district;
+    private PersonResponseDTO person;
 
 }

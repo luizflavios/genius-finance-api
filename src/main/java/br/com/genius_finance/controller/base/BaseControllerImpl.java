@@ -5,6 +5,8 @@ import br.com.genius_finance.model.dto.base.BaseResponseDTO;
 import br.com.genius_finance.model.entity.BaseEntity;
 import br.com.genius_finance.model.mapper.base.BaseMapper;
 import br.com.genius_finance.service.base.BaseServiceImpl;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
@@ -28,6 +30,9 @@ public abstract class BaseControllerImpl<T extends BaseDTO, D extends BaseRespon
 
     @Override
     @PostMapping
+    @Operation(summary = "Create", responses = {
+            @ApiResponse(responseCode = "201")
+    })
     public ResponseEntity<D> create(@RequestBody T t) {
         var response = baseService.save(t);
         return new ResponseEntity<>(baseMapper.toDTO(response), CREATED);
@@ -35,6 +40,7 @@ public abstract class BaseControllerImpl<T extends BaseDTO, D extends BaseRespon
 
     @Override
     @GetMapping("/{uuid}")
+    @Operation(summary = "Find By Id")
     public ResponseEntity<D> findById(@PathVariable UUID uuid) {
         var entity = baseService.findByUuid(uuid);
         return new ResponseEntity<>(baseMapper.toDTO(entity), OK);
@@ -42,6 +48,7 @@ public abstract class BaseControllerImpl<T extends BaseDTO, D extends BaseRespon
 
     @Override
     @GetMapping("/page")
+    @Operation(summary = "Find pageable")
     public ResponseEntity<Page<D>> findAll(@RequestParam int page, @RequestParam(defaultValue = "5", required = false) int size) {
         var pageRequest = PageRequest.of(page, size);
         var pageable = baseService.findAll(pageRequest);
@@ -50,6 +57,7 @@ public abstract class BaseControllerImpl<T extends BaseDTO, D extends BaseRespon
 
     @Override
     @PutMapping("/{uuid}")
+    @Operation(summary = "Update")
     public ResponseEntity<D> update(@PathVariable UUID uuid, @RequestBody T t) {
         var entity = baseService.update(uuid, t);
         return new ResponseEntity<>(baseMapper.toDTO(entity), OK);
@@ -57,6 +65,9 @@ public abstract class BaseControllerImpl<T extends BaseDTO, D extends BaseRespon
 
     @Override
     @DeleteMapping("/{uuid}")
+    @Operation(summary = "Delete", responses = {
+            @ApiResponse(responseCode = "204")
+    })
     public ResponseEntity<Void> delete(@PathVariable UUID uuid) {
         baseService.delete(uuid);
         return new ResponseEntity<>(NO_CONTENT);

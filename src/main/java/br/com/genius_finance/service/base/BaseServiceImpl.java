@@ -21,9 +21,14 @@ public abstract class BaseServiceImpl<T extends BaseDTO, D extends BaseResponseD
     protected final BaseRepository<E> baseRepository;
     protected final BaseMapper<T, D, E> baseMapper;
 
+    public void prePersist(E e) {
+        e.setUuid(UUID.randomUUID());
+    }
+
     @Override
     public E save(T t) {
         var entity = baseMapper.toEntity(t);
+        prePersist(entity);
         return baseRepository.save(entity);
     }
 

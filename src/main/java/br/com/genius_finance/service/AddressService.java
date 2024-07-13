@@ -12,9 +12,25 @@ import org.springframework.stereotype.Service;
 @Service
 public class AddressService extends BaseServiceImpl<AddressRequestDTO, AddressResponseDTO, AddressEntity> {
 
+    private final PersonService personService;
+
     @Autowired
     public AddressService(BaseRepository<AddressEntity> baseRepository,
-                          BaseMapper<AddressRequestDTO, AddressResponseDTO, AddressEntity> baseMapper) {
+                          BaseMapper<AddressRequestDTO, AddressResponseDTO, AddressEntity> baseMapper,
+                          PersonService personService) {
         super(baseRepository, baseMapper);
+        this.personService = personService;
     }
+
+    @Override
+    public void prePersist(AddressEntity entity) {
+        personAssociation(entity);
+        super.prePersist(entity);
+    }
+
+    private void personAssociation(AddressEntity entity) {
+        var person = personService.findByUuid(entity.getPerson().getUuid());
+        entity.setPerson(person);
+    }
+
 }
