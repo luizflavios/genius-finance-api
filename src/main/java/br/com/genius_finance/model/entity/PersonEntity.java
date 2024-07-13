@@ -3,10 +3,11 @@ package br.com.genius_finance.model.entity;
 import br.com.genius_finance.core.enums.Gender;
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDate;
 
-@Builder
+@SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -15,10 +16,6 @@ import java.time.LocalDate;
 @Table(name = "people")
 @EqualsAndHashCode(callSuper = true)
 public class PersonEntity extends BaseEntity {
-
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "user_id", nullable = false)
-    private UserEntity user;
 
     @Column(name = "full_name", nullable = false)
     private String fullName;
@@ -33,12 +30,13 @@ public class PersonEntity extends BaseEntity {
     @Column(nullable = false)
     private String email;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "address_id")
+    @OneToOne(mappedBy = "person", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private UserEntity user;
+
+    @OneToOne(mappedBy = "person", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, orphanRemoval = true)
     private AddressEntity address;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "phone_id")
+    @OneToOne(mappedBy = "person", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, orphanRemoval = true)
     private PhoneEntity phone;
 
 }

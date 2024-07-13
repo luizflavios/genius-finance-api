@@ -10,6 +10,8 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+import static java.util.Objects.isNull;
+
 @SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -35,5 +37,12 @@ public abstract class BaseEntity implements Serializable {
     @UpdateTimestamp
     @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
+
+    @PrePersist
+    public void init() {
+        if (isNull(uuid)) {
+            uuid = UUID.randomUUID();
+        }
+    }
 
 }
