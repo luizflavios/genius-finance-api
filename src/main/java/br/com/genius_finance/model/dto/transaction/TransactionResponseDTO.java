@@ -2,6 +2,7 @@ package br.com.genius_finance.model.dto.transaction;
 
 import br.com.genius_finance.core.enums.TransactionType;
 import br.com.genius_finance.model.dto.base.BaseResponseDTO;
+import br.com.genius_finance.model.dto.person.PersonResponseDTO;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
@@ -19,5 +20,6 @@ public class TransactionResponseDTO extends BaseResponseDTO implements Serializa
     private String description;
     private BigDecimal value;
     private TransactionType transactionType;
+    private PersonResponseDTO person;
 
 }
