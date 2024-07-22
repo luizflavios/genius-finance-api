@@ -49,7 +49,8 @@ public abstract class BaseControllerImpl<T extends BaseDTO, D extends BaseRespon
     @Override
     @GetMapping("/page")
     @Operation(summary = "Find pageable")
-    public ResponseEntity<Page<D>> findAll(@RequestParam int page, @RequestParam(defaultValue = "5", required = false) int size) {
+    public ResponseEntity<Page<D>> findAll(@RequestParam(defaultValue = "0") int page,
+                                           @RequestParam(defaultValue = "5") int size) {
         var pageRequest = PageRequest.of(page, size);
         var pageable = baseService.findAll(pageRequest);
         return new ResponseEntity<>(pageable, OK);
