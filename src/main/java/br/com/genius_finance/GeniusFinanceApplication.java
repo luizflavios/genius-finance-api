@@ -6,7 +6,10 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
 @EnableJpaRepositories(
-        basePackages = {"br.com.genius_finance.repository"}
+        basePackages = {
+                "br.com.genius_finance.repository",
+                "br.com.genius_finance.repository.*"
+        }
 )
 public class GeniusFinanceApplication {
 

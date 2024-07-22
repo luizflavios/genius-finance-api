@@ -27,5 +27,5 @@ public class ExpenseResponseDTO extends BaseResponseDTO {
     @JsonIgnoreProperties("person")
     private List<TransactionResponseDTO> transactions;
 
-    private PersonResponseDTO person;
+    private PersonResponseDTO owner;
 }

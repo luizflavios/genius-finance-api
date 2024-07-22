@@ -1,5 +1,6 @@
 package br.com.genius_finance.model.entity;
 
+import br.com.genius_finance.model.entity.base.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;

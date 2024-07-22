@@ -23,9 +23,9 @@ public class PhoneService extends BaseServiceImpl<PhoneRequestDTO, PhoneResponse
     }
 
     @Override
-    public void prePersist(PhoneEntity phoneEntity) {
+    public void detachedAssociations(PhoneEntity phoneEntity) {
+        super.detachedAssociations(phoneEntity);
         personAssociation(phoneEntity);
-        super.prePersist(phoneEntity);
     }
 
     private void personAssociation(PhoneEntity entity) {

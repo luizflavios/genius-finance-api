@@ -1,6 +1,5 @@
 package br.com.genius_finance.service;
 
-import br.com.genius_finance.core.enums.TransactionType;
 import br.com.genius_finance.model.dto.expense.ExpenseRequestDTO;
 import br.com.genius_finance.model.dto.expense.ExpenseResponseDTO;
 import br.com.genius_finance.model.entity.ExpenseEntity;
@@ -9,6 +8,8 @@ import br.com.genius_finance.repository.base.BaseRepository;
 import br.com.genius_finance.service.base.BaseServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.UUID;
 
 @Service
 public class ExpenseService extends BaseServiceImpl<ExpenseRequestDTO, ExpenseResponseDTO, ExpenseEntity> {
@@ -29,11 +30,11 @@ public class ExpenseService extends BaseServiceImpl<ExpenseRequestDTO, ExpenseRe
     }
 
     @Override
-    public void prePersist(ExpenseEntity expenseEntity) {
-        categoryAssociation(expenseEntity);
-        verifyIncomeTransactions(expenseEntity);
-        personAssociation(expenseEntity);
-        super.prePersist(expenseEntity);
+    public void detachedAssociations(ExpenseEntity expense) {
+        super.detachedAssociations(expense);
+        categoryAssociation(expense);
+        transactionAssociation(expense);
+        personAssociation(expense);
     }
 
     private void categoryAssociation(ExpenseEntity expenseEntity) {
@@ -41,21 +42,16 @@ public class ExpenseService extends BaseServiceImpl<ExpenseRequestDTO, ExpenseRe
         expenseEntity.setCategory(category);
     }
 
-    private void verifyIncomeTransactions(ExpenseEntity expenseEntity) {
-        for (int i = 0; i < expenseEntity.getTransactions().size(); i++) {
-            var uuid = expenseEntity.getTransactions().get(i).getUuid();
-            var transactionEntity = transactionService.findByUuid(uuid);
-
-            if (transactionEntity.getTransactionType().equals(TransactionType.CREDIT)) {
-                throw new IllegalStateException("Expense transactions can´t be debit type");
-            }
-
-            expenseEntity.getTransactions().set(i, transactionEntity);
-        }
+    private void transactionAssociation(ExpenseEntity expenseEntity) {
+        expenseEntity.getTransactions().replaceAll(entity -> transactionService.findByUuid(entity.getUuid()));
     }
 
     private void personAssociation(ExpenseEntity expenseEntity) {
-        var person = personService.findByUuid(expenseEntity.getPerson().getUuid());
-        expenseEntity.setPerson(person);
+        var person = personService.findByUuid(expenseEntity.getOwner().getUuid());
+        expenseEntity.setOwner(person);
+
+        //TODO: Remove when authentication/authorization is ready
+        var createdBy = personService.findByUuid(UUID.fromString("cd1f1e98-878b-464d-a168-fcbc4a9861cb"));
+        expenseEntity.setCreatedBy(createdBy);
     }
 }

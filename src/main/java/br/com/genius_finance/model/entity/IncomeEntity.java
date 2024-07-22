@@ -1,5 +1,6 @@
 package br.com.genius_finance.model.entity;
 
+import br.com.genius_finance.model.entity.base.AuditedBaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
@@ -14,7 +15,7 @@ import java.util.List;
 @Entity
 @Table(name = "incomes")
 @EqualsAndHashCode(callSuper = true)
-public class IncomeEntity extends BaseEntity {
+public class IncomeEntity extends AuditedBaseEntity {
 
     @Column(nullable = false)
     private String description;
@@ -30,7 +31,7 @@ public class IncomeEntity extends BaseEntity {
     private List<TransactionEntity> transactions;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "person_id", nullable = false)
-    private PersonEntity person;
+    @JoinColumn(name = "owner", nullable = false)
+    private PersonEntity owner;
 
 }

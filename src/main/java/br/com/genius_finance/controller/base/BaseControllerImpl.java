@@ -2,7 +2,7 @@ package br.com.genius_finance.controller.base;
 
 import br.com.genius_finance.model.dto.base.BaseDTO;
 import br.com.genius_finance.model.dto.base.BaseResponseDTO;
-import br.com.genius_finance.model.entity.BaseEntity;
+import br.com.genius_finance.model.entity.base.BaseEntity;
 import br.com.genius_finance.model.mapper.base.BaseMapper;
 import br.com.genius_finance.service.base.BaseServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;

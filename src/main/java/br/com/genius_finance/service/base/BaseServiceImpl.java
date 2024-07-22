@@ -2,7 +2,7 @@ package br.com.genius_finance.service.base;
 
 import br.com.genius_finance.model.dto.base.BaseDTO;
 import br.com.genius_finance.model.dto.base.BaseResponseDTO;
-import br.com.genius_finance.model.entity.BaseEntity;
+import br.com.genius_finance.model.entity.base.BaseEntity;
 import br.com.genius_finance.model.mapper.base.BaseMapper;
 import br.com.genius_finance.repository.base.BaseRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -21,8 +21,13 @@ public abstract class BaseServiceImpl<T extends BaseDTO, D extends BaseResponseD
     protected final BaseRepository<E> baseRepository;
     protected final BaseMapper<T, D, E> baseMapper;
 
+    public void detachedAssociations(E e) {
+
+    }
+
     public void prePersist(E e) {
         e.setUuid(UUID.randomUUID());
+        detachedAssociations(e);
     }
 
     @Override

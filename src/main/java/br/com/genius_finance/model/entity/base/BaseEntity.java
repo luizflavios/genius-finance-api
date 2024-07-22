@@ -1,4 +1,4 @@
-package br.com.genius_finance.model.entity;
+package br.com.genius_finance.model.entity.base;
 
 import jakarta.persistence.*;
 import lombok.*;
