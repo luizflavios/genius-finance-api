@@ -6,8 +6,11 @@ import br.com.genius_finance.model.dto.phone.PhoneResponseDTO;
 import br.com.genius_finance.model.entity.PhoneEntity;
 import br.com.genius_finance.model.mapper.base.BaseMapper;
 import br.com.genius_finance.service.base.BaseServiceImpl;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -22,4 +25,9 @@ public class PhoneController extends BaseControllerImpl<PhoneRequestDTO, PhoneRe
         super(baseService, baseMapper);
     }
 
+    @Override
+    @Operation(hidden = true)
+    public ResponseEntity<Page<PhoneResponseDTO>> findAll(int page, int size) {
+        throw new UnsupportedOperationException("operation disabled");
+    }
 }

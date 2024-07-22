@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @AllArgsConstructor
@@ -18,6 +19,8 @@ import java.util.List;
 @SuperBuilder
 public class ExpenseResponseDTO extends BaseResponseDTO {
     private String description;
+
+    private BigDecimal total;
 
     private CategoryResponseDTO category;
 
