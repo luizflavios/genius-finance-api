@@ -1,9 +1,9 @@
 package br.com.genius_finance.repository;
 
 import br.com.genius_finance.model.entity.PhoneEntity;
-import org.springframework.data.jpa.repository.JpaRepository;
+import br.com.genius_finance.repository.base.BaseRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface PhoneRepository extends JpaRepository<PhoneEntity, Long> {
+public interface PhoneRepository extends BaseRepository<PhoneEntity> {
 }

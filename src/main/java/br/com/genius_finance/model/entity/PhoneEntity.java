@@ -1,11 +1,10 @@
 package br.com.genius_finance.model.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
-@Builder
+@SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -14,6 +13,10 @@ import lombok.*;
 @Table(name = "phones")
 @EqualsAndHashCode(callSuper = true)
 public class PhoneEntity extends BaseEntity {
+
+    @OneToOne
+    @JoinColumn(name = "person_id", nullable = false)
+    private PersonEntity person;
 
     @Column(name = "country_code", columnDefinition = "varchar(3)", nullable = false)
     private String countryCode;
