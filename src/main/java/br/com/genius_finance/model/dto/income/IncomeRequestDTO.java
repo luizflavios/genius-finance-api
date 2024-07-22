@@ -27,6 +27,6 @@ public class IncomeRequestDTO implements BaseDTO {
     private List<BaseEntityDTO> transactions;
 
     @NotNull
-    private BaseEntityDTO person;
+    private BaseEntityDTO owner;
 
 }

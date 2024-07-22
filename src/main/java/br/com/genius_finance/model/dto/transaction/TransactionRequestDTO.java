@@ -1,6 +1,6 @@
 package br.com.genius_finance.model.dto.transaction;
 
-import br.com.genius_finance.core.enums.TransactionType;
+import br.com.genius_finance.core.enums.PaymentType;
 import br.com.genius_finance.model.dto.base.BaseDTO;
 import br.com.genius_finance.model.dto.base.BaseEntityDTO;
 import jakarta.validation.constraints.NotBlank;
@@ -17,7 +17,7 @@ import java.math.BigDecimal;
 @Builder
 public class TransactionRequestDTO implements BaseDTO {
 
-    private BaseEntityDTO person;
+    private BaseEntityDTO owner;
 
     @NotBlank
     private String description;
@@ -26,5 +26,5 @@ public class TransactionRequestDTO implements BaseDTO {
     private BigDecimal value;
 
     @NotNull
-    private TransactionType transactionType;
+    private PaymentType paymentType;
 }

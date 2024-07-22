@@ -2,7 +2,7 @@ package br.com.genius_finance.service.base;
 
 import br.com.genius_finance.model.dto.base.BaseDTO;
 import br.com.genius_finance.model.dto.base.BaseResponseDTO;
-import br.com.genius_finance.model.entity.BaseEntity;
+import br.com.genius_finance.model.entity.base.BaseEntity;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

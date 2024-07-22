@@ -9,12 +9,30 @@ import br.com.genius_finance.service.base.BaseServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 @Service
 public class CategoryService extends BaseServiceImpl<CategoryRequestDTO, CategoryResponseDTO, CategoryEntity> {
 
+    private final PersonService personService;
+
     @Autowired
     public CategoryService(BaseRepository<CategoryEntity> baseRepository,
-                           BaseMapper<CategoryRequestDTO, CategoryResponseDTO, CategoryEntity> baseMapper) {
+                           BaseMapper<CategoryRequestDTO, CategoryResponseDTO, CategoryEntity> baseMapper,
+                           PersonService personService) {
         super(baseRepository, baseMapper);
+        this.personService = personService;
+    }
+
+    @Override
+    public void prePersist(CategoryEntity categoryEntity) {
+        personAssociation(categoryEntity);
+        super.prePersist(categoryEntity);
+    }
+
+    //TODO: Remove when authentication/authorization is ready
+    private void personAssociation(CategoryEntity categoryEntity) {
+        var person = personService.findByUuid(UUID.fromString("cd1f1e98-878b-464d-a168-fcbc4a9861cb"));
+        categoryEntity.setCreatedBy(person);
     }
 }

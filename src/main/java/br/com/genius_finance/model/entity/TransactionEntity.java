@@ -1,6 +1,7 @@
 package br.com.genius_finance.model.entity;
 
-import br.com.genius_finance.core.enums.TransactionType;
+import br.com.genius_finance.core.enums.PaymentType;
+import br.com.genius_finance.model.entity.base.AuditedBaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
@@ -15,11 +16,7 @@ import java.math.BigDecimal;
 @Entity
 @Table(name = "transactions")
 @EqualsAndHashCode(callSuper = true)
-public class TransactionEntity extends BaseEntity {
-
-    @ManyToOne
-    @JoinColumn(nullable = false)
-    private PersonEntity person;
+public class TransactionEntity extends AuditedBaseEntity {
 
     @Column(nullable = false)
     private String description;
@@ -28,7 +25,11 @@ public class TransactionEntity extends BaseEntity {
     private BigDecimal value;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "transaction_type", nullable = false)
-    private TransactionType transactionType;
+    @Column(name = "payment_type", nullable = false)
+    private PaymentType paymentType;
+
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "owner", nullable = false)
+    private PersonEntity owner;
 
 }

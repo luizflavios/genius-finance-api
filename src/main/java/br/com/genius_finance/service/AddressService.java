@@ -23,9 +23,9 @@ public class AddressService extends BaseServiceImpl<AddressRequestDTO, AddressRe
     }
 
     @Override
-    public void prePersist(AddressEntity entity) {
+    public void detachedAssociations(AddressEntity entity) {
+        super.detachedAssociations(entity);
         personAssociation(entity);
-        super.prePersist(entity);
     }
 
     private void personAssociation(AddressEntity entity) {

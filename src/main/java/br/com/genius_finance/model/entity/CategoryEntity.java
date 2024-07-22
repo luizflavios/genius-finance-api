@@ -1,6 +1,7 @@
 package br.com.genius_finance.model.entity;
 
 import br.com.genius_finance.core.enums.CategoryType;
+import br.com.genius_finance.model.entity.base.AuditedBaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
@@ -13,7 +14,7 @@ import lombok.experimental.SuperBuilder;
 @Entity
 @Table(name = "categories")
 @EqualsAndHashCode(callSuper = true)
-public class CategoryEntity extends BaseEntity {
+public class CategoryEntity extends AuditedBaseEntity {
 
     @Column(nullable = false)
     private String description;
