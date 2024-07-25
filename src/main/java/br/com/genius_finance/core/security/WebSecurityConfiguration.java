@@ -1,8 +1,8 @@
 package br.com.genius_finance.core.security;
 
-import br.com.genius_finance.core.converter.KeycloakJwtRolesConverter;
+import br.com.genius_finance.core.config.KeycloakConfiguration;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -17,8 +17,12 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 public class WebSecurityConfiguration {
 
-    @Value("${keycloak.issuer-url}")
-    private String tokenIssuerUrl;
+    private final KeycloakConfiguration keycloakConfiguration;
+
+    @Autowired
+    public WebSecurityConfiguration(KeycloakConfiguration keycloakConfiguration) {
+        this.keycloakConfiguration = keycloakConfiguration;
+    }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http, CustomAuthenticationEntryPoint entryPoint,
@@ -26,8 +30,10 @@ public class WebSecurityConfiguration {
 
         http.authorizeHttpRequests(authorizeRequests ->
                 authorizeRequests
+                        .requestMatchers("/swagger-ui/**").permitAll()
+                        .requestMatchers("/*/api-docs/**").permitAll()
+                        .requestMatchers("/docs").permitAll()
                         .requestMatchers("/auth/**").permitAll()
-                        .requestMatchers("/transactions/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
         );
 
@@ -39,7 +45,7 @@ public class WebSecurityConfiguration {
                     httpSecurityOAuth2ResourceServerConfigurer.authenticationEntryPoint(entryPoint);
                     httpSecurityOAuth2ResourceServerConfigurer.accessDeniedHandler(accessDenied);
                     httpSecurityOAuth2ResourceServerConfigurer.jwt(
-                            jwtConfigurer -> jwtConfigurer.jwtAuthenticationConverter(new KeycloakJwtRolesConverter())
+                            jwtConfigurer -> jwtConfigurer.jwtAuthenticationConverter(new KeycloakJwtRolesConverter(keycloakConfiguration))
                     );
                 }
         );
@@ -49,7 +55,7 @@ public class WebSecurityConfiguration {
 
     @Bean
     public JwtDecoder jwtDecoder() {
-        return JwtDecoders.fromIssuerLocation(tokenIssuerUrl);
+        return JwtDecoders.fromIssuerLocation(keycloakConfiguration.getIssuerUrl());
     }
 
 }

@@ -15,8 +15,8 @@ public class TokenDTO {
 
     private String accessToken;
     private String refreshToken;
-    private Integer expiresIn;
-    private Integer refreshExpiresIn;
+    private Long expiresIn;
+    private Long refreshExpiresIn;
     private String tokenType;
     private String sessionState;
     private String scope;

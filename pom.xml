@@ -35,6 +35,7 @@
         <java.version>17</java.version>
         <mapstruct.version>1.6.0.Beta1</mapstruct.version>
         <springdoc-openapi-starter-webmvc-ui.version>2.0.2</springdoc-openapi-starter-webmvc-ui.version>
+        <keycloak-admin-client.version>25.0.2</keycloak-admin-client.version>
     </properties>
 
     <dependencies>
@@ -120,6 +121,12 @@
             <groupId>org.mapstruct</groupId>
             <artifactId>mapstruct</artifactId>
             <version>${mapstruct.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.keycloak</groupId>
+            <artifactId>keycloak-admin-client</artifactId>
+            <version>${keycloak-admin-client.version}</version>
         </dependency>
 
     </dependencies>
