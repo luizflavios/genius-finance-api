@@ -9,12 +9,27 @@ import br.com.genius_finance.service.base.BaseServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 @Service
 public class PersonService extends BaseServiceImpl<PersonRequestDTO, PersonResponseDTO, PersonEntity> {
 
+    private final UserService userService;
+
     @Autowired
     public PersonService(BaseRepository<PersonEntity> baseRepository,
-                         BaseMapper<PersonRequestDTO, PersonResponseDTO, PersonEntity> baseMapper) {
+                         BaseMapper<PersonRequestDTO, PersonResponseDTO, PersonEntity> baseMapper, UserService userService) {
         super(baseRepository, baseMapper);
+        this.userService = userService;
     }
+
+    @Override
+    public void postPersist(PersonEntity personEntity) {
+        userService.createUser(personEntity);
+    }
+
+    public PersonEntity findByLoggedUser(UUID uuid) {
+        return userService.findByUUID(uuid).getPerson();
+    }
+
 }

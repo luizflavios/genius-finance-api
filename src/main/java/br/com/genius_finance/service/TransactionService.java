@@ -1,5 +1,6 @@
 package br.com.genius_finance.service;
 
+import br.com.genius_finance.core.utils.AuthUtils;
 import br.com.genius_finance.model.dto.transaction.TransactionRequestDTO;
 import br.com.genius_finance.model.dto.transaction.TransactionResponseDTO;
 import br.com.genius_finance.model.entity.PersonEntity;
@@ -9,8 +10,6 @@ import br.com.genius_finance.repository.base.BaseRepository;
 import br.com.genius_finance.service.base.BaseServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.UUID;
 
 import static java.util.Objects.nonNull;
 
@@ -34,8 +33,7 @@ public class TransactionService extends BaseServiceImpl<TransactionRequestDTO, T
     }
 
     private void personAssociation(TransactionEntity transactionEntity) {
-        //TODO: Change this when authentication/authorization is ready
-        var createdBy = personService.findByUuid(UUID.fromString("cd1f1e98-878b-464d-a168-fcbc4a9861cb"));
+        var createdBy = personService.findByLoggedUser(AuthUtils.loggedUserReference());
         transactionEntity.setCreatedBy(createdBy);
 
         PersonEntity owner;

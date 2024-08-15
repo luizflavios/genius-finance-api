@@ -30,11 +30,17 @@ public abstract class BaseServiceImpl<T extends BaseDTO, D extends BaseResponseD
         detachedAssociations(e);
     }
 
+    public void postPersist(E e) {
+
+    }
+
     @Override
     public E save(T t) {
         var entity = baseMapper.toEntity(t);
         prePersist(entity);
-        return baseRepository.save(entity);
+        entity = baseRepository.save(entity);
+        postPersist(entity);
+        return entity;
     }
 
     @Override
