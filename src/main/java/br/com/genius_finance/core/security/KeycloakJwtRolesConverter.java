@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.stereotype.Component;
@@ -55,7 +56,10 @@ public class KeycloakJwtRolesConverter implements Converter<Jwt, JwtAuthenticati
             });
         }
 
-        return new JwtAuthenticationToken(jwt, grantedAuthorities);
+        var authentication = new JwtAuthenticationToken(jwt, grantedAuthorities);
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        
+        return authentication;
     }
 
     private String formatRole(String realmRole, String resourceRole) {

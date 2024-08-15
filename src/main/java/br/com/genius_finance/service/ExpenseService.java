@@ -1,5 +1,6 @@
 package br.com.genius_finance.service;
 
+import br.com.genius_finance.core.utils.AuthUtils;
 import br.com.genius_finance.model.dto.expense.ExpenseRequestDTO;
 import br.com.genius_finance.model.dto.expense.ExpenseResponseDTO;
 import br.com.genius_finance.model.entity.ExpenseEntity;
@@ -8,8 +9,6 @@ import br.com.genius_finance.repository.base.BaseRepository;
 import br.com.genius_finance.service.base.BaseServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.UUID;
 
 @Service
 public class ExpenseService extends BaseServiceImpl<ExpenseRequestDTO, ExpenseResponseDTO, ExpenseEntity> {
@@ -50,8 +49,7 @@ public class ExpenseService extends BaseServiceImpl<ExpenseRequestDTO, ExpenseRe
         var person = personService.findByUuid(expenseEntity.getOwner().getUuid());
         expenseEntity.setOwner(person);
 
-        //TODO: Remove when authentication/authorization is ready
-        var createdBy = personService.findByUuid(UUID.fromString("cd1f1e98-878b-464d-a168-fcbc4a9861cb"));
+        var createdBy = personService.findByLoggedUser(AuthUtils.loggedUserReference());
         expenseEntity.setCreatedBy(createdBy);
     }
 }

@@ -9,8 +9,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import static org.springframework.http.HttpStatus.CONFLICT;
-import static org.springframework.http.HttpStatus.NOT_FOUND;
+import static org.springframework.http.HttpStatus.*;
 
 @ControllerAdvice
 public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
@@ -31,6 +30,12 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<ErrorDTO> handleInvalidDataAccessApiUsageException(InvalidDataAccessApiUsageException e) {
         var error = ErrorDTO.builder().error(e.getMessage()).detail(e.getLocalizedMessage()).build();
         return new ResponseEntity<>(error, CONFLICT);
+    }
+
+    @ExceptionHandler(CreateKeycloakUserException.class)
+    public ResponseEntity<ErrorDTO> handleICreateKeycloakUserException(CreateKeycloakUserException e) {
+        var error = ErrorDTO.builder().error(e.getMessage()).detail(e.getLocalizedMessage()).build();
+        return new ResponseEntity<>(error, UNPROCESSABLE_ENTITY);
     }
 
 }

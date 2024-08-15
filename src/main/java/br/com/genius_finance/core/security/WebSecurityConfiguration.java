@@ -12,6 +12,8 @@ import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.JwtDecoders;
 import org.springframework.security.web.SecurityFilterChain;
 
+import static org.springframework.http.HttpMethod.POST;
+
 @Slf4j
 @Configuration
 @EnableWebSecurity
@@ -34,6 +36,7 @@ public class WebSecurityConfiguration {
                         .requestMatchers("/*/api-docs/**").permitAll()
                         .requestMatchers("/docs").permitAll()
                         .requestMatchers("/auth/**").permitAll()
+                        .requestMatchers(POST, "/people").permitAll()
                         .anyRequest().authenticated()
         );
 
