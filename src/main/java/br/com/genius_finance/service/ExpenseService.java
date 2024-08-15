@@ -10,6 +10,8 @@ import br.com.genius_finance.service.base.BaseServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import static java.util.Objects.nonNull;
+
 @Service
 public class ExpenseService extends BaseServiceImpl<ExpenseRequestDTO, ExpenseResponseDTO, ExpenseEntity> {
 
@@ -46,10 +48,15 @@ public class ExpenseService extends BaseServiceImpl<ExpenseRequestDTO, ExpenseRe
     }
 
     private void personAssociation(ExpenseEntity expenseEntity) {
-        var person = personService.findByUuid(expenseEntity.getOwner().getUuid());
-        expenseEntity.setOwner(person);
-
         var createdBy = personService.findByLoggedUser(AuthUtils.loggedUserReference());
         expenseEntity.setCreatedBy(createdBy);
+
+        if (nonNull(expenseEntity.getOwner())) {
+            var person = personService.findByUuid(expenseEntity.getOwner().getUuid());
+            expenseEntity.setOwner(person);
+        } else {
+            expenseEntity.setOwner(createdBy);
+        }
+
     }
 }

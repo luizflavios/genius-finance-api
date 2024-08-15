@@ -26,7 +26,7 @@ public class GroupEntity extends AuditedBaseEntity {
             inverseJoinColumns = @JoinColumn(name = "person_id", referencedColumnName = "id", table = "people"))
     private List<PersonEntity> people;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "group")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "ownerGroup")
     private List<BudgetEntity> budgets;
 
 }

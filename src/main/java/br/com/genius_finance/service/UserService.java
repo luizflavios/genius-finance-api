@@ -10,6 +10,7 @@ import br.com.genius_finance.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Service
@@ -27,7 +28,15 @@ public class UserService {
     }
 
     public TokenDTO login(LoginRequestDTO loginRequestDTO) {
-        return keycloakClient.login(loginRequestDTO);
+        var tokenDTO = keycloakClient.login(loginRequestDTO);
+        updateLastLogin(loginRequestDTO.getUsername());
+        return tokenDTO;
+    }
+
+    private void updateLastLogin(String username) {
+        var user = userRepository.findByPersonEmail(username).orElseThrow(EntityNotFoundException::new);
+        user.setLastLogin(LocalDateTime.now());
+        userRepository.save(user);
     }
 
     public TokenDTO refreshToken() {
