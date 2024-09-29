@@ -9,6 +9,8 @@ import br.com.genius_finance.repository.base.BaseRepository;
 import br.com.genius_finance.service.base.BaseServiceImpl;
 import org.springframework.stereotype.Service;
 
+import static java.lang.Boolean.TRUE;
+import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
 @Service
@@ -27,6 +29,12 @@ public class BudgetService extends BaseServiceImpl<BudgetRequestDTO, BudgetRespo
         this.expenseService = expenseService;
         this.groupService = groupService;
         this.personService = personService;
+    }
+
+    @Override
+    public void prePersist(BudgetEntity budgetEntity) {
+        super.prePersist(budgetEntity);
+        budgetEntity.setActive(TRUE);
     }
 
     @Override
@@ -51,6 +59,10 @@ public class BudgetService extends BaseServiceImpl<BudgetRequestDTO, BudgetRespo
     }
 
     private void expenseAssociation(BudgetEntity budgetEntity) {
+        if (isNull(budgetEntity.getExpenses()) || budgetEntity.getExpenses().isEmpty()) {
+            return;
+        }
+
         budgetEntity.getExpenses().replaceAll(expenseEntity -> expenseService.findByUuid(expenseEntity.getUuid()));
     }
 

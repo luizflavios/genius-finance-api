@@ -3,7 +3,7 @@ package br.com.genius_finance.model.dto.budget;
 import br.com.genius_finance.model.dto.base.BaseResponseDTO;
 import br.com.genius_finance.model.dto.expense.ExpenseResponseDTO;
 import br.com.genius_finance.model.dto.group.GroupResponseDTO;
-import br.com.genius_finance.model.dto.person.PersonResponseDTO;
+import br.com.genius_finance.model.dto.person.SummaryPersonResponseDTO;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
@@ -22,5 +22,5 @@ public class BudgetResponseDTO extends BaseResponseDTO {
     private BigDecimal spendingLimit;
     private List<ExpenseResponseDTO> expenses;
     private GroupResponseDTO ownerGroup;
-    private PersonResponseDTO owner;
+    private SummaryPersonResponseDTO owner;
 }

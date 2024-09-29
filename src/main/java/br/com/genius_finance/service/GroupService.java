@@ -8,6 +8,8 @@ import br.com.genius_finance.repository.base.BaseRepository;
 import br.com.genius_finance.service.base.BaseServiceImpl;
 import org.springframework.stereotype.Service;
 
+import static br.com.genius_finance.core.utils.AuthUtils.loggedUserReference;
+
 @Service
 public class GroupService extends BaseServiceImpl<GroupRequestDTO, GroupResponseDTO, GroupEntity> {
 
@@ -17,6 +19,12 @@ public class GroupService extends BaseServiceImpl<GroupRequestDTO, GroupResponse
                         BaseMapper<GroupRequestDTO, GroupResponseDTO, GroupEntity> baseMapper, PersonService personService) {
         super(baseRepository, baseMapper);
         this.personService = personService;
+    }
+
+    @Override
+    public void prePersist(GroupEntity groupEntity) {
+        super.prePersist(groupEntity);
+        groupEntity.setCreatedBy(personService.findByLoggedUser(loggedUserReference()));
     }
 
     @Override

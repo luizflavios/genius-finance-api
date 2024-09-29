@@ -8,12 +8,14 @@ import br.com.genius_finance.model.entity.UserEntity;
 import br.com.genius_finance.model.mapper.UserMapper;
 import br.com.genius_finance.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Service
+@Slf4j
 public class UserService {
 
     private final KeycloakClient keycloakClient;
@@ -29,8 +31,18 @@ public class UserService {
 
     public TokenDTO login(LoginRequestDTO loginRequestDTO) {
         var tokenDTO = keycloakClient.login(loginRequestDTO);
-        updateLastLogin(loginRequestDTO.getUsername());
+
+        updateLastLoginRealized(loginRequestDTO);
+
         return tokenDTO;
+    }
+
+    private void updateLastLoginRealized(LoginRequestDTO loginRequestDTO) {
+        try {
+            updateLastLogin(loginRequestDTO.getUsername());
+        } catch (Exception ignored) {
+            log.warn("Access token generated to not registered user - [{}]", loginRequestDTO.getUsername().toUpperCase());
+        }
     }
 
     private void updateLastLogin(String username) {
