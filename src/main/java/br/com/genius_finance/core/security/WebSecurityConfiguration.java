@@ -33,6 +33,7 @@ public class WebSecurityConfiguration {
         http.authorizeHttpRequests(authorizeRequests ->
                 authorizeRequests
                         .requestMatchers("/swagger-ui/**").permitAll()
+                        .requestMatchers("/actuator/**").permitAll()
                         .requestMatchers("/*/api-docs/**").permitAll()
                         .requestMatchers("/docs").permitAll()
                         .requestMatchers("/auth/**").permitAll()
