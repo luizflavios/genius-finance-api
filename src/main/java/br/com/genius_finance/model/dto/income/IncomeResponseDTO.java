@@ -2,7 +2,7 @@ package br.com.genius_finance.model.dto.income;
 
 import br.com.genius_finance.model.dto.base.BaseResponseDTO;
 import br.com.genius_finance.model.dto.category.CategoryResponseDTO;
-import br.com.genius_finance.model.dto.person.PersonResponseDTO;
+import br.com.genius_finance.model.dto.person.SummaryPersonResponseDTO;
 import br.com.genius_finance.model.dto.transaction.TransactionResponseDTO;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
@@ -28,5 +28,5 @@ public class IncomeResponseDTO extends BaseResponseDTO {
     @JsonIgnoreProperties("person")
     private List<TransactionResponseDTO> transactions;
 
-    private PersonResponseDTO owner;
+    private SummaryPersonResponseDTO owner;
 }

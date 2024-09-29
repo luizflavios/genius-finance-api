@@ -6,12 +6,14 @@ import br.com.genius_finance.model.entity.PersonEntity;
 import br.com.genius_finance.model.mapper.base.BaseMapper;
 import br.com.genius_finance.repository.base.BaseRepository;
 import br.com.genius_finance.service.base.BaseServiceImpl;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
 
 @Service
+@Slf4j
 public class PersonService extends BaseServiceImpl<PersonRequestDTO, PersonResponseDTO, PersonEntity> {
 
     private final UserService userService;
@@ -25,7 +27,13 @@ public class PersonService extends BaseServiceImpl<PersonRequestDTO, PersonRespo
 
     @Override
     public void postPersist(PersonEntity personEntity) {
-        userService.createUser(personEntity);
+        try {
+            userService.createUser(personEntity);
+        } catch (Exception e) {
+            log.info("Error when create user - Error: {}", e.getMessage());
+            delete(personEntity.getUuid());
+            throw e;
+        }
     }
 
     public PersonEntity findByLoggedUser(UUID uuid) {

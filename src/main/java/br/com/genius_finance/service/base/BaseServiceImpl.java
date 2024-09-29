@@ -43,10 +43,15 @@ public abstract class BaseServiceImpl<T extends BaseDTO, D extends BaseResponseD
         return entity;
     }
 
+    public void preUpdate(E e) {
+        detachedAssociations(e);
+    }
+
     @Override
     public E update(UUID uuid, T t) {
         var entity = findByUuid(uuid);
         baseMapper.copyProperties(t, entity);
+        preUpdate(entity);
         return baseRepository.save(entity);
     }
 

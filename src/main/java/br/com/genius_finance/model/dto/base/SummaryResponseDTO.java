@@ -3,7 +3,6 @@ package br.com.genius_finance.model.dto.base;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
-import java.time.LocalDateTime;
 import java.util.UUID;
 
 @SuperBuilder
@@ -12,8 +11,6 @@ import java.util.UUID;
 @Getter
 @Setter
 @EqualsAndHashCode
-public abstract class BaseResponseDTO implements BaseDTO {
+public abstract class SummaryResponseDTO implements BaseDTO {
     private UUID uuid;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
 }

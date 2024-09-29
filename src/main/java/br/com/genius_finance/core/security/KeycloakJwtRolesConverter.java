@@ -22,7 +22,7 @@ import static java.util.Collections.emptyList;
 @Component
 public class KeycloakJwtRolesConverter implements Converter<Jwt, JwtAuthenticationToken> {
 
-    public static final String ROLE_PREFIX = "ROLE";
+    private static final String ROLE_PREFIX = "ROLE";
     private static final String CLAIM_REALM_ACCESS = "realm_access";
     private static final String CLAIM_RESOURCE_ACCESS = "resource_access";
     private static final String CLAIM_ROLES = "roles";
@@ -36,7 +36,6 @@ public class KeycloakJwtRolesConverter implements Converter<Jwt, JwtAuthenticati
 
     @Override
     public JwtAuthenticationToken convert(Jwt jwt) {
-
         Map<String, Collection<String>> realmAccess = jwt.getClaim(CLAIM_REALM_ACCESS);
         Map<String, Map<String, Collection<String>>> resourceAccess = jwt.getClaim(CLAIM_RESOURCE_ACCESS);
         Collection<GrantedAuthority> grantedAuthorities = new ArrayList<>();
@@ -45,11 +44,13 @@ public class KeycloakJwtRolesConverter implements Converter<Jwt, JwtAuthenticati
             Collection<String> realmRoles = realmAccess.getOrDefault(CLAIM_ROLES, emptyList());
             realmRoles.forEach(r -> {
                 boolean hasResourceRoles = resourceAccess != null && resourceAccess.containsKey(keycloakConfiguration.getClientId());
+
                 if (hasResourceRoles) {
                     Collection<String> resourceRoles = resourceAccess.get(keycloakConfiguration.getClientId()).getOrDefault(CLAIM_ROLES, emptyList());
                     resourceRoles.forEach(resourceRole ->
                             grantedAuthorities.add(new SimpleGrantedAuthority(formatRole(r, resourceRole)))
                     );
+
                 } else {
                     grantedAuthorities.add(new SimpleGrantedAuthority(formatRoleWithPrefix(r)));
                 }
@@ -58,7 +59,7 @@ public class KeycloakJwtRolesConverter implements Converter<Jwt, JwtAuthenticati
 
         var authentication = new JwtAuthenticationToken(jwt, grantedAuthorities);
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        
+
         return authentication;
     }
 
